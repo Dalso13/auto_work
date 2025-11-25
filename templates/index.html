@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}홈 - 업무 자동화 도구{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-4 fw-bold">어떤 업무를 도와드릴까요?</h1>
+    <p class="lead text-muted">Google Gemini AI를 활용해 반복 업무를 자동화하세요.</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center">
+                <h3 class="card-title">📊 엑셀 데이터 생성</h3>
+                <p class="card-text">줄글로 된 텍스트를 정리된 엑셀 파일로 변환합니다.</p>
+                <a href="/excel" class="btn btn-primary">시작하기</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center">
+                <h3 class="card-title">📝 노션 문서 작성</h3>
+                <p class="card-text">주제만 입력하면 노션 스타일의 문서를 써드립니다.</p>
+                <a href="/notion" class="btn btn-outline-primary">준비 중</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center">
+                <h3 class="card-title">🔄 문서 변환</h3>
+                <p class="card-text">파일 형식을 변경하거나 내용을 요약합니다.</p>
+                <a href="/converter" class="btn btn-outline-primary">준비 중</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body text-center">
+                <h3 class="card-title">🌐 비즈니스 번역</h3>
+                <p class="card-text">상황과 톤앤매너에 맞는 번역을 제공합니다.</p>
+                <a href="/translator" class="btn btn-outline-primary">준비 중</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

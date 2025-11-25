@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 엑셀 생성기</title>
+    <link href="[https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css](https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css)" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; padding-top: 50px; }
+        .container { max-width: 800px; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        textarea { height: 200px; resize: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mb-4">📊 AI 텍스트 -> 엑셀 변환기</h2>
+        <p class="text-muted text-center">정리되지 않은 텍스트를 넣으면 자동으로 표를 만들어줍니다.</p>
+        
+        <form action="/generate-excel" method="POST">
+            <div class="mb-3">
+                <label for="raw_text" class="form-label">텍스트 입력:</label>
+                <textarea class="form-control" name="raw_text" id="raw_text" placeholder="예: 1월 1일 점심 식대 12000원, 1월 2일 저녁 회식비 50000원..."></textarea>
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-success btn-lg">엑셀 파일 다운로드 📥</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

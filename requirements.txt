@@ -1,0 +1,9 @@
+# coding: utf-8
+Flask
+google-generativeai
+python-dotenv
+pandas
+openpyxl
+xlsxwriter
+python-docx
+markdown
