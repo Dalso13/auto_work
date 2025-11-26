@@ -3,6 +3,9 @@ import io
 import json
 import re  # JSON 추출을 위한 정규표현식 라이브러리
 from llm_wrapper import LLMWrapper  # <--- 핵심: 이제 직접 모델을 부르지 않고 래퍼를 씁니다.
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class AIService:
     def __init__(self):
