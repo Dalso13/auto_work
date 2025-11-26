@@ -7,10 +7,11 @@ class LLMWrapper:
         # .env에서 어떤 모델을 쓸지 가져옴 (기본값: gemini)
         self.provider = os.getenv("AI_PROVIDER", "gemini")
         self.api_key = os.getenv("API_KEY")
+        self.model = os.getenv("MODEL")
 
         if self.provider == "gemini":
             genai.configure(api_key=self.api_key)
-            self.model = genai.GenerativeModel('gemini-2.5-flash')
+            self.model = genai.GenerativeModel(self.model)
         
         elif self.provider == "openai":
             # self.client = openai.OpenAI(api_key=self.api_key)
