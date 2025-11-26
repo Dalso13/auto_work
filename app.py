@@ -32,15 +32,52 @@ def notion_page():
     # 결과를 notion.html로 넘겨줌 (result가 있으면 결과 화면, 없으면 입력 화면)
     return render_template('notion.html', result=result)
 
-# 4. 변환 (준비 중)
-@app.route('/converter')
-def converter_page():
-    return render_template('converter.html')
-
-# 5. 번역 (준비 중)
-@app.route('/translator')
+# 4. 번역 (준비 중)
+@app.route('/translator', methods=['GET', 'POST'])
 def translator_page():
-    return render_template('translator.html')
+    result = None
+    input_text = ""
+    selected_direction = "ko_to_en" # 기본값
+    selected_tone = "Business (Formal)" # 기본값
 
+    if request.method == 'POST':
+        input_text = request.form.get('input_text')
+        selected_direction = request.form.get('direction')
+        selected_tone = request.form.get('tone')
+        
+        # AI 번역 요청
+        result = ai_service.translate_text(input_text, selected_direction, selected_tone)
+
+    return render_template(
+        'translator.html', 
+        result=result, 
+        input_text=input_text,
+        selected_direction=selected_direction,
+        selected_tone=selected_tone
+    )
+@app.route('/meeting', methods=['GET', 'POST'])
+def meeting_page():
+    result = None
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return "파일이 없습니다."
+        
+        file = request.files['file']
+        if file.filename == '':
+            return "파일을 선택해주세요."
+
+        # 1. 텍스트 파일 읽기 (인코딩 처리 중요!)
+        try:
+            # 먼저 utf-8로 시도
+            transcript = file.read().decode('utf-8')
+        except UnicodeDecodeError:
+            # 실패하면 cp949 (윈도우 메모장 기본 저장 방식)로 재시도
+            file.seek(0)
+            transcript = file.read().decode('cp949')
+
+        # 2. AI 요약 요청
+        result = ai_service.summarize_meeting(transcript)
+
+    return render_template('meeting.html', result=result)
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,30 +1,59 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 엑셀 생성기</title>
-    <link href="[https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css](https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css)" rel="stylesheet">
-    <style>
-        body { background-color: #f8f9fa; padding-top: 50px; }
-        .container { max-width: 800px; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        textarea { height: 200px; resize: none; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2 class="text-center mb-4">📊 AI 텍스트 -> 엑셀 변환기</h2>
-        <p class="text-muted text-center">정리되지 않은 텍스트를 넣으면 자동으로 표를 만들어줍니다.</p>
-        
-        <form method="POST">
-            <div class="mb-3">
-                <label for="raw_text" class="form-label">텍스트 입력:</label>
-                <textarea class="form-control" name="raw_text" id="raw_text" placeholder="예: 1월 1일 점심 식대 12000원, 1월 2일 저녁 회식비 50000원..."></textarea>
-            </div>
-            <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-success btn-lg">엑셀 파일 다운로드 📥</button>
-            </div>
-        </form>
+{% extends "base.html" %}
+
+{% block title %}엑셀 데이터 생성 - Gemini Auto{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0 p-4">
+            <h2 class="text-center mb-3 fw-bold">📊 엑셀 생성기</h2>
+            <p class="text-center text-muted mb-4">
+                뒤죽박죽 섞인 텍스트를 넣으면 깔끔한 엑셀 표로 정리해 드립니다.
+            </p>
+            
+            <form method="POST" onsubmit="showLoading()">
+                <div class="mb-4">
+                    <label for="raw_text" class="form-label fw-bold">텍스트 입력</label>
+                    <textarea 
+                        class="form-control bg-light" 
+                        name="raw_text" 
+                        id="raw_text" 
+                        rows="8" 
+                        placeholder="예시:&#13;&#10;1월 1일 점심 식대 12,000원 (김밥천국)&#13;&#10;1월 2일 저녁 회식 150,000원 (삼겹살)&#13;&#10;..." 
+                        required></textarea>
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" id="submitBtn" class="btn btn-primary btn-lg">
+                        📥 엑셀 변환 및 다운로드
+                    </button>
+                    
+                    <button type="button" id="loadingBtn" class="btn btn-secondary btn-lg" style="display: none;" disabled>
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        AI가 데이터를 정리 중입니다...
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="alert alert-info mt-4" role="alert">
+            <h5 class="alert-heading">💡 팁</h5>
+            <p class="mb-0 small">날짜, 항목, 금액, 수량 등이 포함된 텍스트를 넣으면 AI가 자동으로 열(Column)을 구분합니다. 카카오톡 대화 내용이나 이메일 본문을 그대로 붙여넣어도 좋습니다.</p>
+        </div>
     </div>
-</body>
-</html>
+</div>
+
+<script>
+    function showLoading() {
+        // 제출 버튼을 숨기고 로딩 버튼을 보여줌
+        document.getElementById('submitBtn').style.display = 'none';
+        document.getElementById('loadingBtn').style.display = 'block';
+
+        // (파일 다운로드는 페이지 이동이 아니므로, 3초 뒤에 버튼을 원상복구 해줌)
+        setTimeout(() => {
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('loadingBtn').style.display = 'none';
+        }, 3000);
+    }
+</script>
+{% endblock %}

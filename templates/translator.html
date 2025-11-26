@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}AI 뉘앙스 번역기{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center mb-4 fw-bold">🌐 AI 뉘앙스 번역기</h2>
+    
+    <form method="POST" id="transForm" onsubmit="showLoading()">
+        <div class="card p-3 mb-4 bg-light border-0">
+            <div class="row g-3 align-items-center">
+                
+                <div class="col-md-5">
+                    <select class="form-select" name="direction">
+                        <option value="ko_to_en" {% if selected_direction == 'ko_to_en' %}selected{% endif %}>
+                            🇰🇷 한국어 ➡ 🇺🇸 영어 (Korean to English)
+                        </option>
+                        <option value="en_to_ko" {% if selected_direction == 'en_to_ko' %}selected{% endif %}>
+                            🇺🇸 영어 ➡ 🇰🇷 한국어 (English to Korean)
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-5">
+                    <select class="form-select" name="tone">
+                        <option value="Business (Formal)" {% if selected_tone == 'Business (Formal)' %}selected{% endif %}>
+                            👔 비즈니스 (격식있고 정중하게)
+                        </option>
+                        <option value="Casual (Friendly)" {% if selected_tone == 'Casual (Friendly)' %}selected{% endif %}>
+                            ☕️ 일상 대화 (친구처럼 자연스럽게)
+                        </option>
+                        <option value="Email (Professional)" {% if selected_tone == 'Email (Professional)' %}selected{% endif %}>
+                            📧 이메일 (명확하고 간결하게)
+                        </option>
+                        <option value="Witty (Creative)" {% if selected_tone == 'Witty (Creative)' %}selected{% endif %}>
+                            ✨ 마케팅/SNS (재치있고 힙하게)
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 d-grid">
+                    <button type="submit" id="btnSubmit" class="btn btn-primary">번역하기</button>
+                    <button type="button" id="btnLoading" class="btn btn-secondary" style="display:none;" disabled>
+                        <span class="spinner-border spinner-border-sm"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">원본 텍스트</label>
+                <textarea class="form-control" name="input_text" rows="12" placeholder="번역할 내용을 입력하세요..." required>{{ input_text }}</textarea>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold text-success">번역 결과</label>
+                <textarea class="form-control bg-white" id="resultText" rows="12" readonly placeholder="결과가 여기에 나타납니다.">{% if result %}{{ result }}{% endif %}</textarea>
+                
+                {% if result %}
+                <div class="d-grid mt-2">
+                    <button type="button" class="btn btn-outline-success" onclick="copyResult()">📋 결과 복사하기</button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    // 로딩바 표시
+    function showLoading() {
+        document.getElementById('btnSubmit').style.display = 'none';
+        document.getElementById('btnLoading').style.display = 'block';
+    }
+
+    // 복사 기능
+    function copyResult() {
+        const copyText = document.getElementById("resultText");
+        copyText.select();
+        navigator.clipboard.writeText(copyText.value).then(() => {
+            alert("복사되었습니다!");
+        });
+    }
+</script>
+{% endblock %}
