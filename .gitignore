@@ -275,3 +275,4 @@ pip-selfcheck.json
 
 .env
 *.env
+.DS_Store
