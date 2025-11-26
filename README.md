@@ -6,4 +6,4 @@
 
 API_KEY : API key 기입 </br>
 AI_PROVIDER : 사용 </br>
-AI MODEL : 사용 모델
+MODEL : 사용 모델
