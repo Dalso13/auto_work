@@ -52,10 +52,17 @@
 </div>
 
 <script>
-    // 1. 입력창 자동 높이 조절 함수 (입력할 때마다 실행됨)
+// 1. 입력창 자동 높이 조절 함수 (화면 튀는 현상 수정버전)
     function autoResize(textarea) {
-        textarea.style.height = 'auto'; // 높이 초기화
-        textarea.style.height = (textarea.scrollHeight) + 'px'; // 내용만큼 늘리기
+        // [수정] 현재 화면의 스크롤 위치를 저장합니다.
+        const currentScrollPosition = window.scrollY;
+
+        // 높이 재계산
+        textarea.style.height = 'auto';
+        textarea.style.height = (textarea.scrollHeight) + 'px';
+
+        // [수정] 저장해둔 스크롤 위치로 강제 복구합니다.
+        window.scrollTo(window.scrollX, currentScrollPosition);
     }
 
     // 2. 로딩 표시
