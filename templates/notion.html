@@ -4,14 +4,25 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-9"> <h2 class="mb-4 fw-bold">📝 노션 마크다운 생성기</h2>
+    <div class="col-md-9">
+        <h2 class="mb-4 fw-bold">📝 노션 마크다운 생성기</h2>
 
         {% if not result %}
         <div class="card p-4 shadow-sm border-0">
             <form method="POST" onsubmit="showLoading()">
                 <div class="mb-4">
-                    <label for="topic" class="form-label fw-bold">작성할 주제나 키워드</label>
-                    <input type="text" class="form-control form-control-lg" id="topic" name="topic" placeholder="예: 다음 주 도쿄 여행 계획, 신규 프로젝트 기획안..." required>
+                    <label for="topic" class="form-label fw-bold">작성할 주제나 요구사항</label>
+                    
+                    <textarea 
+                        class="form-control form-control-lg bg-light" 
+                        id="topic" 
+                        name="topic" 
+                        rows="4" 
+                        placeholder="예시:&#13;&#10;- 다음 주 도쿄 2박 3일 여행 계획 짜줘&#13;&#10;- 맛집이랑 쇼핑 위주로&#13;&#10;- 신규 프로젝트 기획안 초안 작성해줘" 
+                        required
+                        oninput="autoResize(this)"
+                        style="resize: none; overflow-y: hidden;"
+                    ></textarea>
                 </div>
                 <div class="d-grid">
                     <button type="submit" id="btnSubmit" class="btn btn-primary btn-lg">문서 생성하기 ✨</button>
@@ -26,25 +37,12 @@
         {% if result %}
         <div class="card p-4 shadow-sm border-success">
             <h4 class="text-success mb-3">✅ 생성 완료!</h4>
-            
             <p class="text-muted">아래 내용을 복사해서 노션에 붙여넣거나(.md) 파일로 저장하세요.</p>
-            
-            <textarea 
-                id="resultText" 
-                class="form-control mb-3 bg-light" 
-                style="min-height: 500px; resize: vertical; overflow-y: hidden;"
-                readonly
-            >{{ result }}</textarea>
-            
+            <textarea id="resultText" class="form-control mb-3 bg-light" style="min-height: 500px;" readonly>{{ result }}</textarea>
             <div class="d-flex gap-2">
-                <button onclick="copyToClipboard()" class="btn btn-dark flex-grow-1 py-2">
-                    📋 클립보드에 복사
-                </button>
-                <button onclick="downloadMarkdown()" class="btn btn-outline-success flex-grow-1 py-2">
-                    💾 .md 파일로 저장
-                </button>
+                <button onclick="copyToClipboard()" class="btn btn-dark flex-grow-1 py-2">📋 클립보드에 복사</button>
+                <button onclick="downloadMarkdown()" class="btn btn-outline-success flex-grow-1 py-2">💾 .md 파일로 저장</button>
             </div>
-            
             <div class="mt-4 text-end">
                 <a href="/notion" class="text-decoration-none fw-bold">🔄 다른 주제로 다시 만들기</a>
             </div>
@@ -54,23 +52,18 @@
 </div>
 
 <script>
-    // 0. 화면 로드 시 텍스트 상자 높이 자동 조절 (핵심 기능)
-    window.onload = function() {
-        const textarea = document.getElementById("resultText");
-        if (textarea) {
-            // 내용에 맞춰 높이 늘리기 (내용 + 약간의 여유)
-            textarea.style.height = "auto";
-            textarea.style.height = (textarea.scrollHeight + 10) + "px";
-        }
-    };
+    // 1. 입력창 자동 높이 조절 함수 (입력할 때마다 실행됨)
+    function autoResize(textarea) {
+        textarea.style.height = 'auto'; // 높이 초기화
+        textarea.style.height = (textarea.scrollHeight) + 'px'; // 내용만큼 늘리기
+    }
 
-    // 1. 로딩 표시
+    // 2. 로딩 표시
     function showLoading() {
         document.getElementById('btnSubmit').style.display = 'none';
         document.getElementById('btnLoading').style.display = 'block';
     }
 
-    // 2. 클립보드 복사 기능
     function copyToClipboard() {
         const copyText = document.getElementById("resultText");
         copyText.select();
@@ -79,12 +72,10 @@
         });
     }
 
-    // 3. .md 파일 다운로드 기능
     function downloadMarkdown() {
         const text = document.getElementById("resultText").value;
         const blob = new Blob([text], { type: "text/markdown" });
         const url = URL.createObjectURL(blob);
-        
         const a = document.createElement("a");
         a.href = url;
         a.download = "notion_doc.md";
