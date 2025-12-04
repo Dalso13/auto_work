@@ -2,7 +2,11 @@ version: '3.8'
 
 services:
   web:
-    build: .
+    build:
+      context: .
+      args:
+        - REPO_URL=https://github.com/Dalso13/auto_work.git
+        - CACHEBUST=${CACHEBUST}
     ports:
       - "8888:5000"
     env_file:
